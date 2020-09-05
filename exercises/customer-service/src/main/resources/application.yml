@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: customer-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/chaosstore?allowPublicKeyRetrieval=true&useSSL=false
+    username: changeme
+    password: changeme
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  profiles:
+    default: chaos-monkey
+
+server:
+  port: 8093
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+chaos:
+  monkey:
+    enabled: true
+    assaults:
+      level: 1
+      latencyRangeStart: 5000
+      latencyRangeEnd: 30000
+      exceptionsActive: false
+      killApplicationActive: false
+    watcher:
+      repository: true
+      restController: true
+
+management:
+  endpoint:
+    chaosmonkey:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,chaosmonkey
+    cors:
+      allow-credentials: true

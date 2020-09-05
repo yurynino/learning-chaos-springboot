@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/chaosstore?allowPublicKeyRetrieval=true&useSSL=false
+    username: changeme
+    password: changeme
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8091
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    de.codecentric: TRACE
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+        loggerLevel: basic
+  hystrix:
+    enabled: false
+
+ribbon:
+  ConnectTimeout: 10000
+  ReadTimeout: 10000
+
+chaos:
+  monkey:
+    enabled: false
+    assaults:
+      level: 1
+      latencyRangeStart: 1000
+      latencyRangeEnd: 5000
+      exceptionsActive: false
+      killApplicationActive: false
+    watcher:
+      repository: true
+
+management:
+  endpoint:
+    chaosmonkey:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,chaosmonkey
